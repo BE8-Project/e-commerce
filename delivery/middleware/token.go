@@ -7,17 +7,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func ExtractTokenUserId(e echo.Context) float64 {
+func ExtractTokenUserId(e echo.Context) (float64) {
 	user := e.Get("user").(*jwt.Token)
 
 	if user.Valid {
 		claims := user.Claims.(jwt.MapClaims)
-		user_id := claims["user_id"].(float64)
-		return user_id
+		userId := claims["userId"].(float64)
+		return userId
 	}
 
 	return 0
 }
+
 func ExtractTokenUsername(e echo.Context) string {
 	user := e.Get("user").(*jwt.Token)
 
@@ -30,10 +31,10 @@ func ExtractTokenUsername(e echo.Context) string {
 	return ""
 }
 
-func CreateToken(user_id uint, username string) (string, error) {
+func CreateToken(userId uint, username string) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
-	claims["user_id"] = user_id
+	claims["userId"] = userId
 	claims["username"] = username
 	claims["expired"] = time.Now().Add(time.Hour * 1).Unix() //Token expires after 1 hour
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

@@ -19,11 +19,23 @@ type Login struct {
 	Name     string `json:"name"`
 	Username string `json:"username"`
 }
+
 type DeleteUser struct {
 	Name      string         `json:"name"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
+
 type UpdateUser struct {
 	Name      string    `json:"name"`
 	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type InsertCategory struct {
+	Name string `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+type Category struct {
+	Name string `json:"name"`
+	Slug string `json:"slug"`
 }
