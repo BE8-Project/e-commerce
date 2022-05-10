@@ -13,4 +13,5 @@ type User struct {
 	Products []Product `gorm:"foreignkey:UserID"`
 }
 type Product struct {
+	UserID uint `gorm:"type:int;not null"`
 }

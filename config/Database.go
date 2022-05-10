@@ -1,6 +1,7 @@
 package config
 
 import (
+	"e-commerce/entity"
 	"fmt"
 
 	"github.com/labstack/gommon/log"
@@ -28,5 +29,5 @@ func InitDB(config AppConfig) *gorm.DB {
 }
 
 func AutoMigrate(db *gorm.DB) {
-	db.AutoMigrate()
+	db.AutoMigrate(&entity.User{})
 }

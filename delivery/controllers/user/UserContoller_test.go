@@ -1,6 +1,7 @@
 package user
 
 import (
+	User "e-commerce/delivery/controllers"
 	"e-commerce/delivery/helpers/response"
 	"e-commerce/entity"
 	"encoding/json"
@@ -34,7 +35,7 @@ func TestRegister(t *testing.T) {
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
 		context.SetPath("/register")
-		controller := NewUserController(&mockUser{})
+		controller := User.NewUserController(&mockUser{})
 		controller.Register()(context)
 
 		type Response struct {
@@ -67,7 +68,7 @@ func TestRegister(t *testing.T) {
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
 		context.SetPath("/register")
-		controller := NewUserController(&mockUser{})
+		controller := User.NewUserController(&mockUser{})
 		controller.Register()(context)
 
 		type Response struct {
@@ -99,7 +100,7 @@ func TestRegister(t *testing.T) {
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
 		context.SetPath("/register")
-		controller := NewUserController(&mockErorInputUser{})
+		controller := User.NewUserController(&mockErorInputUser{})
 		controller.Register()(context)
 
 		type Response struct {
@@ -131,7 +132,7 @@ func TestRegister(t *testing.T) {
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
 		context.SetPath("/register")
-		controller := NewUserController(&mockErorInputUser{})
+		controller := User.NewUserController(&mockErorInputUser{})
 		controller.Register()(context)
 
 		type Response struct {
@@ -163,7 +164,7 @@ func TestLogin(t *testing.T) {
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
 		context.SetPath("/login")
-		controller := NewUserController(&mockUser{})
+		controller := User.NewUserController(&mockUser{})
 		controller.Login()(context)
 
 		type Response struct {
@@ -195,7 +196,7 @@ func TestLogin(t *testing.T) {
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
 		context.SetPath("/register")
-		controller := NewUserController(&mockUser{})
+		controller := User.NewUserController(&mockUser{})
 		controller.Register()(context)
 
 		type Response struct {
@@ -225,7 +226,7 @@ func TestLogin(t *testing.T) {
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
 		context.SetPath("/login")
-		controller := NewUserController(&mockAutorizUser{})
+		controller := User.NewUserController(&mockAutorizUser{})
 		controller.Login()(context)
 
 		type Response struct {
@@ -251,7 +252,7 @@ func TestGetUser(t *testing.T) {
 
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
-		controller := NewUserController(&mockUser{})
+		controller := User.NewUserController(&mockUser{})
 
 		controller.GetUser(context)
 
@@ -276,7 +277,7 @@ func TestGetUser(t *testing.T) {
 
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
-		controller := NewUserController(&mockErorUser{})
+		controller := User.NewUserController(&mockErorUser{})
 
 		controller.GetUser(context)
 
@@ -316,7 +317,7 @@ func TestUpdate(t *testing.T) {
 		context.SetPath("/users/:username")
 		context.SetParamNames("username")
 		context.SetParamValues("fajar123")
-		controller := NewUserController(&mockUser{})
+		controller := User.NewUserController(&mockUser{})
 
 		middleware.JWTWithConfig(middleware.JWTConfig{SigningMethod: "HS256", SigningKey: []byte("$p4ssw0rd")})(controller.Update())(context)
 
@@ -353,7 +354,7 @@ func TestUpdate(t *testing.T) {
 		context.SetPath("/users/:username")
 		context.SetParamNames("username")
 		context.SetParamValues("fajar123")
-		controller := NewUserController(&mockUser{})
+		controller := User.NewUserController(&mockUser{})
 
 		middleware.JWTWithConfig(middleware.JWTConfig{SigningMethod: "HS256", SigningKey: []byte("$p4ssw0rd")})(controller.Update())(context)
 
@@ -389,7 +390,7 @@ func TestUpdate(t *testing.T) {
 		context.SetPath("/users/:username")
 		context.SetParamNames("username")
 		context.SetParamValues("fajar123")
-		controller := NewUserController(&mockErorInputUser{})
+		controller := User.NewUserController(&mockErorInputUser{})
 
 		middleware.JWTWithConfig(middleware.JWTConfig{SigningMethod: "HS256", SigningKey: []byte("$p4ssw0rd")})(controller.Update())(context)
 
@@ -418,7 +419,7 @@ func TestDelete(t *testing.T) {
 		res := httptest.NewRecorder()
 		context := e.NewContext(req, res)
 		context.SetPath("/users")
-		controller := NewUserController(&mockUser{})
+		controller := User.NewUserController(&mockUser{})
 
 		middleware.JWTWithConfig(middleware.JWTConfig{SigningMethod: "HS256", SigningKey: []byte("$p4ssw0rd")})(controller.Delete())(context)
 
