@@ -39,3 +39,34 @@ type Category struct {
 	Name string `json:"name"`
 	Slug string `json:"slug"`
 }
+
+type InsertProduct struct {
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+type UpdateProduct struct {
+	Name      string    `json:"name"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type DeleteProduct struct {
+	Name      string         `json:"name"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at"`
+}
+
+type Product struct {
+	ID    uint    `json:"id"`
+	Name  string  `json:"name"`
+	Price float64 `json:"price"`
+	Image string  `json:"image"`
+}
+
+type ProductMerchant struct {
+	ID    uint    `json:"id"`
+	Name  string  `json:"name"`
+	Price float64 `json:"price"`
+	Stock uint    `json:"stock"`
+	Image string  `json:"image"`
+	// Status uint `json:"status"`
+}
