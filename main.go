@@ -2,6 +2,10 @@ package main
 
 import (
 	"e-commerce/config"
+	user "e-commerce/delivery/controllers/user"
+	"e-commerce/delivery/routes"
+
+	userModel "e-commerce/repository/user"
 	"fmt"
 
 	"github.com/labstack/echo/v4"
@@ -13,6 +17,11 @@ func main() {
 	config.AutoMigrate(db)
 
 	e := echo.New()
+
+	userModel := userModel.NewUserModel(db)
+	userController := user.NewUserController(userModel)
+
+	routes.Route(e, userController)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", conf.Port)))
 }
