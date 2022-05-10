@@ -2,7 +2,7 @@ package main
 
 import (
 	"e-commerce/config"
-	user "e-commerce/delivery/controllers"
+	user "e-commerce/delivery/controllers/user"
 	"e-commerce/delivery/routes"
 
 	userModel "e-commerce/repository/user"
