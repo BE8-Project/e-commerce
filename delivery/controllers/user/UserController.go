@@ -82,7 +82,7 @@ func (u *userController) GetUser(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, response.StatusNotFound("User not found"))
 	}
 
-	return c.JSON(http.StatusOK, response.StatusOK("success get user!", result))
+	return c.JSON(http.StatusOK, response.StatusOK("success get User!", result))
 }
 
 func (u *userController) Update() echo.HandlerFunc {
@@ -96,11 +96,9 @@ func (u *userController) Update() echo.HandlerFunc {
 
 		user := entity.User{
 			Name:     request.Name,
-			Username: request.Username,
 			Email:    request.Email,
 			HP:       request.HP,
 			Password: request.Password,
-			Role:     0,
 		}
 
 		result, err := u.Connect.Update(&user, username)
@@ -108,7 +106,7 @@ func (u *userController) Update() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
 		}
 
-		return c.JSON(http.StatusOK, response.StatusOK("success update Product!", result))
+		return c.JSON(http.StatusOK, response.StatusOK("success update User!", result))
 	}
 }
 
