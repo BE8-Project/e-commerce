@@ -11,6 +11,8 @@ type User struct {
 	Password string    `gorm:"type:varchar(100);not null"`
 	Role     int       `gorm:"type:int;not null"`
 	Products []Product `gorm:"foreignkey:UserID"`
+	Addresses []Address `gorm:"foreignkey:UserID"`
+	Orders    []Order   `gorm:"foreignkey:UserID"`
 }
 
 type Category struct {
@@ -32,6 +34,7 @@ type Product struct {
 	CategoryID  uint    `gorm:"type:int;not null"`
 	Cart        []Cart  `gorm:"foreignkey:ProductID"`
 }
+
 type Cart struct {
 	gorm.Model
 	UserID    uint    `gorm:"type:int;not null"`
@@ -40,4 +43,24 @@ type Cart struct {
 	Price     float64 `gorm:"type:decimal(10,2);not null"`
 	Image     string  `gorm:"type:varchar(100);not null"`
 	ProductID uint    `gorm:"type:int;not null"`
+}
+
+type Address struct {
+	gorm.Model
+	UserID uint `gorm:"type:int;not null"`
+	Address string `gorm:"type:varchar(100);not null"`
+	City string `gorm:"type:varchar(100);not null"`
+	Country string `gorm:"type:varchar(100);not null"`
+	ZipCode string `gorm:"type:varchar(100);not null"`
+	Orders []Order `gorm:"foreignkey:AddressID"`
+}
+
+type Order struct {
+	gorm.Model
+	UserID uint `gorm:"type:int;not null"`
+	AddressID uint `gorm:"type:int;not null"`
+	TrackingNumber string `gorm:"type:varchar(100);not null"`
+	PaymentType string `gorm:"type:varchar(100);not null"`
+	Total float64 `gorm:"type:decimal(10,2);not null"`
+	Status string `gorm:"type:varchar(100);not null;default:'pending'"`
 }

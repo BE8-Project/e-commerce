@@ -70,6 +70,7 @@ type ProductMerchant struct {
 	Image string  `json:"image"`
 	// Status uint `json:"status"`
 }
+
 type CartInsert struct {
 	ID        uint    `json:"id"`
 	Quantity  uint    `json:"quantity"`
@@ -77,4 +78,17 @@ type CartInsert struct {
 	UserID    uint    `json:"userID"`
 	Image     string  `json:"image"`
 	ProductID uint    `json:"produkId"`
+}
+
+type InsertAddress struct {
+	UserID   uint    `json:"userID"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
+type InsertOrder struct {
+	TrackingNumber string `json:"tracking_number"`
+	PaymentType string `json:"payment_type"`
+	Total float64 `json:"total"`
+	Status string `json:"status"`
+	CreatedAt time.Time `json:"created_at"`
 }

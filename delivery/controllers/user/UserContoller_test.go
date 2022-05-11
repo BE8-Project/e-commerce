@@ -18,7 +18,7 @@ import (
 var token_user string
 
 func TestRegister(t *testing.T) {
-	t.Run("Status Ok", func(t *testing.T) {
+	t.Run("Status OK", func(t *testing.T) {
 		e := echo.New()
 		requestBody, _ := json.Marshal(map[string]interface{}{
 			"name":     "fajar",
@@ -265,7 +265,7 @@ func TestGetUser(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &resp)
 
 		assert.Equal(t, 200, resp.Code)
-		assert.Equal(t, "success get user!", resp.Message)
+		assert.Equal(t, "success get User!", resp.Message)
 		assert.Equal(t, map[string]interface{}(map[string]interface{}{"name": "fajar", "username": "fajar123", "email": "fajar123@gmail.com", "hp": "098765433212", "created_at": "0001-01-01T00:00:00Z"}), resp.Data)
 	})
 	t.Run("Status Not Found", func(t *testing.T) {
@@ -330,7 +330,7 @@ func TestUpdate(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &resp)
 
 		assert.Equal(t, 200, resp.Code)
-		assert.Equal(t, "success update Product!", resp.Message)
+		assert.Equal(t, "success update User!", resp.Message)
 		assert.Equal(t, map[string]interface{}{"name": "fajar", "updated_at": "0001-01-01T00:00:00Z"}, resp.Data)
 	})
 	t.Run("invalid request", func(t *testing.T) {
