@@ -47,7 +47,7 @@ func (u *userModel) Insert(user *entity.User) (response.User, error) {
 func (u *userModel) Login(custom []string, password string) (response.Login, error) {
 	var user entity.User
 
-	record := u.DB.Where("email = ? OR username = ? OR hp = ?", custom[0], custom[1], custom[2]).Find(&user)
+	record := u.DB.Where("email = ?", custom[0]).Or("username = ?", custom[1]).Or("hp = ?",custom[2]).Find(&user)
 	hash := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 
 	if record.RowsAffected == 0 {
