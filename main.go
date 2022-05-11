@@ -2,11 +2,13 @@ package main
 
 import (
 	"e-commerce/config"
+	"e-commerce/delivery/controllers/cart"
 	category "e-commerce/delivery/controllers/category"
 	product "e-commerce/delivery/controllers/product"
 	user "e-commerce/delivery/controllers/user"
 	"e-commerce/delivery/routes"
 
+	cartModels "e-commerce/repository/cart"
 	categoryModel "e-commerce/repository/category"
 	productModel "e-commerce/repository/product"
 	userModel "e-commerce/repository/user"
@@ -31,7 +33,10 @@ func main() {
 	productModel := productModel.NewProductModel(db)
 	productController := product.NewProductController(productModel)
 
-	routes.Route(e, userController, categoryController, productController)
+	cartModel := cartModels.NewCartModel(db)
+	cartController := cart.NewCartController(cartModel)
+
+	routes.Route(e, userController, categoryController, productController, cartController)
 
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", conf.Port)))
 }

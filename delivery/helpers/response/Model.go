@@ -31,7 +31,7 @@ type UpdateUser struct {
 }
 
 type InsertCategory struct {
-	Name string `json:"name"`
+	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -69,4 +69,12 @@ type ProductMerchant struct {
 	Stock uint    `json:"stock"`
 	Image string  `json:"image"`
 	// Status uint `json:"status"`
+}
+type CartInsert struct {
+	ID        uint    `json:"id"`
+	Quantity  uint    `json:"quantity"`
+	Price     float64 `json:"price"`
+	UserID    uint    `json:"userID"`
+	Image     string  `json:"image"`
+	ProductID uint    `json:"produkId"`
 }

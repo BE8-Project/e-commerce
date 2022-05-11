@@ -15,19 +15,29 @@ type User struct {
 
 type Category struct {
 	gorm.Model
-	Name     string `gorm:"type:varchar(100);not null"`
-	Slug     string `gorm:"type:varchar(100);not null;unique"`
+	Name     string    `gorm:"type:varchar(100);not null"`
+	Slug     string    `gorm:"type:varchar(100);not null;unique"`
 	Products []Product `gorm:"foreignkey:CategoryID"`
 }
 
 type Product struct {
 	gorm.Model
-	Name        string `gorm:"type:varchar(100);not null"`
-	Slug        string `gorm:"type:varchar(100);not null;unique"`
+	Name        string  `gorm:"type:varchar(100);not null"`
+	Slug        string  `gorm:"type:varchar(100);not null;unique"`
 	Price       float64 `gorm:"type:decimal(10,2);not null"`
-	Stock 	    uint     `gorm:"type:int;not null"`
-	Description string `gorm:"type:text;not null"`
-	Image       string `gorm:"type:varchar(100);not null"`
-	UserID 		uint   `gorm:"type:int;not null"`
-	CategoryID  uint  `gorm:"type:int;not null"`
+	Stock       uint    `gorm:"type:int;not null"`
+	Description string  `gorm:"type:text;not null"`
+	Image       string  `gorm:"type:varchar(100);not null"`
+	UserID      uint    `gorm:"type:int;not null"`
+	CategoryID  uint    `gorm:"type:int;not null"`
+	Cart        []Cart  `gorm:"foreignkey:ProductID"`
+}
+type Cart struct {
+	gorm.Model
+	UserID    uint    `gorm:"type:int;not null"`
+	Name      string  `gorm:"type:varchar(100);not null"`
+	Quantity  uint    `gorm:"type:int;not null"`
+	Price     float64 `gorm:"type:decimal(10,2);not null"`
+	Image     string  `gorm:"type:varchar(100);not null"`
+	ProductID uint    `gorm:"type:int;not null"`
 }
