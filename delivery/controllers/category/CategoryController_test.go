@@ -11,6 +11,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/stretchr/testify/assert"
@@ -118,6 +119,35 @@ func TestInsert(t *testing.T) {
 
 		assert.Equal(t, 400, resp.Code)
 		assert.Equal(t, "invalid request", resp.Message)
+	})
+
+	t.Run("Status Validate", func(t *testing.T) {
+		e := echo.New()
+		requestBody, _ := json.Marshal(map[string]interface{}{
+			"name": "",
+		})
+
+		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(string(requestBody)))
+		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		req.Header.Set(echo.HeaderAuthorization, "Bearer "+token_admin)
+
+		res := httptest.NewRecorder()
+		context := e.NewContext(req, res)
+		context.SetPath("/users/address")
+
+		controller := NewCategoryController(&mockCategory{})
+
+		middleware.JWTWithConfig(middleware.JWTConfig{SigningMethod: "HS256", SigningKey: []byte("$p4ssw0rd")})(controller.Insert())(context)
+
+		if res.Body.Bytes() == nil {
+			validator := validator.New()
+			err := validator.Struct(context.ParamValues())
+			if err != nil {
+				assert.Equal(t, 400, res.Code)
+				assert.Equal(t, "invalid request", res.Body.String())
+				assert.Nil(t, err)
+			}
+		}
 	})
 
 	t.Run("Status BadRequest", func(t *testing.T) {
