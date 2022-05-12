@@ -47,7 +47,7 @@ func (ac *addressController) Insert() echo.HandlerFunc {
 
 		result, err := ac.Connect.Insert(&address)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 
 		return c.JSON(http.StatusCreated, response.StatusCreated("success create Address!", result))

@@ -20,6 +20,11 @@ type Login struct {
 	Username string `json:"username"`
 }
 
+type LoginDetail struct {
+	User  Login  `json:"user"`
+	Token string `json:"token"`
+}
+
 type DeleteUser struct {
 	Name      string         `json:"name"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
@@ -58,8 +63,11 @@ type DeleteProduct struct {
 type Product struct {
 	ID    uint    `json:"id"`
 	Name  string  `json:"name"`
+	Slug string  `json:"slug"`
 	Price float64 `json:"price"`
 	Image string  `json:"image"`
+	Stock uint    `json:"stock"`
+	Description string `json:"description"`
 }
 
 type ProductMerchant struct {

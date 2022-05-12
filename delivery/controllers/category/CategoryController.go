@@ -48,7 +48,7 @@ func (cc *categoryController) Insert() echo.HandlerFunc {
 	
 		result, err := cc.Connect.Insert(&category)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 	
 		return c.JSON(http.StatusCreated, response.StatusCreated("success create Category!", result))

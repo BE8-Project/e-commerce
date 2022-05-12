@@ -7,11 +7,6 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type LoginDetail struct {
-	User  Login  `json:"user"`
-	Token string `json:"token"`
-}
-
 func StatusInvalidRequest() map[string]interface{} {
 	return map[string]interface{}{
 		"code":    http.StatusBadRequest,
@@ -34,6 +29,14 @@ func StatusBadRequest(err error) map[string]interface{} {
 	return map[string]interface{}{
 		"code":    http.StatusBadRequest,
 		"message": message,
+		"data":    nil,
+	}
+}
+
+func StatusBadRequestDuplicate(err error) map[string]interface{} {
+	return map[string]interface{}{
+		"code":    http.StatusBadRequest,
+		"message": err.Error(),
 		"data":    nil,
 	}
 }

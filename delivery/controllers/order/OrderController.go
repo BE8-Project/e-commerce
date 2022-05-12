@@ -74,7 +74,7 @@ func (u *orderController) Insert() echo.HandlerFunc {
 
 		result, err := u.Connect.Insert(&order)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 
 		config.SetupGlobalMidtransConfigApi()
@@ -124,7 +124,7 @@ func (u *orderController) GetStatus() echo.HandlerFunc {
 
 		result, err := u.Connect.Update(order_id, &update)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 
 		return c.JSON(http.StatusOK, response.StatusOK("success get Status!", result))
@@ -153,7 +153,7 @@ func (u *orderController) Cancel() echo.HandlerFunc {
 
 		result, err := u.Connect.Update(order_id, &update)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 
 		return c.JSON(http.StatusOK, response.StatusOK("success cancel Order!", result))

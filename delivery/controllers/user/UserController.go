@@ -47,7 +47,7 @@ func (u *userController) Register() echo.HandlerFunc {
 
 		result, err := u.Connect.Insert(&user)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 
 		return c.JSON(http.StatusCreated, response.StatusCreated("success register User!", result))
@@ -114,7 +114,7 @@ func (u *userController) Update() echo.HandlerFunc {
 
 		result, err := u.Connect.Update(&user, username)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 
 		return c.JSON(http.StatusOK, response.StatusOK("success update User!", result))

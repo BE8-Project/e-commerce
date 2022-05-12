@@ -2,7 +2,6 @@ package product
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -917,7 +916,7 @@ type mockError struct {
 }
 
 func (u *mockError) Insert(product *entity.Product) (response.InsertProduct, error) {
-	return response.InsertProduct{}, errors.New("kesalahan input")
+	return response.InsertProduct{}, assert.AnError
 }
 
 func (u *mockError) GetAll() []response.Product {
@@ -933,7 +932,7 @@ func (u *mockError) CheckSlug(slug string) bool {
 }
 
 func (u *mockError) Update(slug string, product *entity.Product) (response.UpdateProduct, error) {
-	return response.UpdateProduct{}, errors.New("kesalahan input")
+	return response.UpdateProduct{}, assert.AnError
 }
 
 func (u *mockError) Delete(slug string) response.DeleteProduct {
@@ -960,7 +959,7 @@ type mockErrorInput struct {
 }
 
 func (u *mockErrorInput) Insert(product *entity.Product) (response.InsertProduct, error) {
-	return response.InsertProduct{}, errors.New("kesalahan input")
+	return response.InsertProduct{}, assert.AnError
 }
 
 func (u *mockErrorInput) GetAll() []response.Product {
@@ -976,7 +975,7 @@ func (u *mockErrorInput) CheckSlug(slug string) bool {
 }
 
 func (u *mockErrorInput) Update(slug string, product *entity.Product) (response.UpdateProduct, error) {
-	return response.UpdateProduct{}, errors.New("kesalahan input")
+	return response.UpdateProduct{}, assert.AnError
 }
 
 func (u *mockErrorInput) Delete(slug string) response.DeleteProduct {
@@ -1003,7 +1002,7 @@ type mockErrorNotfound struct {
 }
 
 func (u *mockErrorNotfound) Insert(product *entity.Product) (response.InsertProduct, error) {
-	return response.InsertProduct{}, errors.New("kesalahan input")
+	return response.InsertProduct{}, assert.AnError
 }
 
 func (u *mockErrorNotfound) GetAll() []response.Product {
@@ -1019,7 +1018,7 @@ func (u *mockErrorNotfound) CheckSlug(slug string) bool {
 }
 
 func (u *mockErrorNotfound) Update(slug string, product *entity.Product) (response.UpdateProduct, error) {
-	return response.UpdateProduct{}, errors.New("kesalahan input")
+	return response.UpdateProduct{}, assert.AnError
 }
 
 func (u *mockErrorNotfound) Delete(slug string) response.DeleteProduct {

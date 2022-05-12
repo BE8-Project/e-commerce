@@ -40,7 +40,7 @@ func (u *cartController) Insert() echo.HandlerFunc {
 
 		err := u.Connect.Insert(request, uint(userID))
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 
 		return c.JSON(http.StatusCreated, response.StatusCreated("success add to Cart!", "Succes"))
@@ -84,7 +84,7 @@ func (u *cartController) Update() echo.HandlerFunc {
 
 		error := u.Connect.Update(request, CartID)
 		if error != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(error))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(error))
 		}
 		
 		cartAll, error := u.Connect.GetAll(uint(userID))
@@ -118,7 +118,7 @@ func (u *cartController) Delete() echo.HandlerFunc {
 
 		error := u.Connect.Delete(CartID)
 		if error != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(error))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(error))
 		}
 		cartAll, error := u.Connect.GetAll(uint(userID))
 		if error != nil {

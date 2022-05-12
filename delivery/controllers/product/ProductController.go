@@ -53,7 +53,7 @@ func (u *productController) Insert() echo.HandlerFunc  {
 
 		result, err := u.Connect.Insert(&product)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 
 		return c.JSON(http.StatusCreated, response.StatusCreated("success create Product!", result))
@@ -115,7 +115,7 @@ func (u *productController) Update() echo.HandlerFunc {
 	
 		result, err := u.Connect.Update(slug, &product)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(err))
 		}
 	
 		return c.JSON(http.StatusOK, response.StatusOK("success update Product!", result))
