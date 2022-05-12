@@ -4,12 +4,11 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
 
 ## Endpoint
 
-- `[POST] /register`
+- > `[POST] /register` endpoint ini digunakan untuk mendaftar akun.
+
+  untuk pengisian field `role` (0 = customers (pembeli), 1 = merchants (penjual))
 
   ```
-  options role (0 == customers, 1 == merchants)
-  example request :
-
   {
       "name" : "testing",
       "username" : "testing",
@@ -20,49 +19,39 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
   }
   ```
 
-- `[POST] /login `
+- > `[POST] /login ` endpoint ini digunakan untuk login
+
+  untuk field `username` bisa diganti menjadi `email` atau `hp`
 
   ```
-  options (username, hp, email)
-  example request :
-
   {
      "username" : "testing",
      "password" : "password"
   }
   ```
 
-- `[PUT] /users/{username}`
+- > `[PUT] /users/{username}` endpoint ini digunakan untuk mengedit user yang telah login
 
   ```
-  use autorization (bearer)
-  example request :
-
   {
    "name" : "testing update"
   }
   ```
 
-- `[DELETE] /users/{username}`
-- `[GET] /users/{username}`
-- `[POST] /admin/categories`
+- > `[DELETE] /users/{username}` endpoint ini digunakan untuk menghapus user
+- > `[GET] /users/{username}` endpoint ini digunakan untuk mengambil data profil user
+- > `[POST] /admin/categories` endpoint ini digunakan oleh admin untuk membuat kategori baru
 
   ```
-  use autorization (bearer)
-  example request :
-
   {
      "name" : "produk fisik"
   }
   ```
 
-- `[GET] /categories`
-- `[POST] /merchants/products`
+- > `[GET] /categories` endpoint ini digunakan untuk mengambil data kategori
+- > `[POST] /merchants/products` endpoint ini digunakan oleh merchant untuk membuat produk baru
 
   ```
-  use autorization (bearer)
-  example request :
-
   {
      "name" : "Laptop 24 inch",
      "price" : 1000000,
@@ -73,34 +62,28 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
   }
   ```
 
-- `[PUT] /merchants/products/{slug}`
+- > `[PUT] /merchants/products/{slug}` endpoint ini digunakan oleh merchant untuk mengedit data productnya
 
   ```
-  use autorization (bearer)
-  example request :
-
   {
      "price" : 1000000,
      "stock" : 5
   }
   ```
 
-- `[DELETE] /merchants/products/{slug}`
-- `[GET] /merchants/products`
+- > `[DELETE] /merchants/products/{slug}` endpoint ini digunakan oleh merchant untuk menghapus data produk
+- > `[GET] /merchants/products`
 
   ```
   use autorization (bearer)
   ```
 
-- `[GET] /products`
-- `[GET] /products/{slug}`
-- `[GET] /products/category/{id}`
-- `[GET] /search`
+- > `[GET] /products`
+- > `[GET] /products/{slug}`
+- > `[GET] /products/category/{id}`
+- > `[GET] /search`
 
   ```
-  use query parameters
-  example request :
-
   parameter=name    || value=laptop
   ```
 

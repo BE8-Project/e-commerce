@@ -1,0 +1,929 @@
+---
+openapi: 3.0.3
+info:
+  title: E-commerce App
+  contact:
+    name: Mahmuda Karima
+    email: dakasakti.id@gmail.com
+  license:
+    name: APACHE 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: 1.0.0
+servers:
+  - url: http://54.179.1.246:8000
+    description: Development
+  - url: https://{dev}.ecommerce.com/v1
+    description: Development
+    variables:
+      environment:
+        default: dev
+        enum:
+          - dev
+          - prod
+paths:
+  /login:
+    post:
+      tags:
+        - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/login_body"
+      responses:
+        "200":
+          description: success create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_login"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400_invalid"
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_401"
+
+  /register:
+    post:
+      tags:
+        - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersSchema"
+      responses:
+        "201":
+          description: success register user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_201_register"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+  /users/{username}:
+    get:
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: get user by id
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimpleUserSchema"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+    put:
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersSchema"
+      responses:
+        "200":
+          description: success create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+    delete:
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: success create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+
+  /admin/categories:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategorySchema"
+      responses:
+        "201":
+          description: success create category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_201_create"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400_invalid"
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_403"
+  /categories:
+    get:
+      tags:
+        - Category
+      responses:
+        "200":
+          description: get all category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_category"
+        "404":
+          description: status not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_404"
+  /merchants/products:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductSchema"
+      responses:
+        "201":
+          description: success create product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_201_create"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_403"
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Products
+      responses:
+        "200":
+          description: get all product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_product"
+        "404":
+          description: status not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_404"
+  /products:
+    get:
+      tags:
+        - Products
+      responses:
+        "200":
+          description: get all product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_product"
+        "404":
+          description: status not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_404"
+  /products/category/{category}:
+    get:
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: get all books
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+  /merchants/products/{slug}:
+    get:
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: get all books
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Products
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: lenovo-rx25
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductSchema"
+      responses:
+        "200":
+          description: success update
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_update"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_403"
+        "404":
+          description: status not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_404"
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Products
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: lenovo-rx25
+      responses:
+        "200":
+          description: success delete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200_delete"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_403"
+        "404":
+          description: status not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_404"
+  /users/cart:
+    get:
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: get all cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayOfCartSchema"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+    post:
+      tags:
+        - Cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartSchema"
+      responses:
+        "200":
+          description: success create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+  /users/cart/{id}:
+    get:
+      tags:
+        - Cart
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: get all books
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductSchema"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+    put:
+      tags:
+        - Cart
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/cart_id_body"
+      responses:
+        "200":
+          description: success create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+    delete:
+      tags:
+        - Cart
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+            example: 1
+      responses:
+        "200":
+          description: success create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+  /user/order/{id}:
+    get:
+      tags:
+        - Order
+      responses:
+        "200":
+          description: get all cart user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayOfCartSchema"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+    post:
+      tags:
+        - Order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderSchema"
+      responses:
+        "200":
+          description: success create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UsersSchema:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Testing
+        username:
+          type: string
+          example: testing@gmail.com
+        hp:
+          type: string
+          example: 081234567890
+        email:
+          type: string
+          example: testing@gmail.com
+        password:
+          type: string
+          example: testing
+        role:
+          type: integer
+          example: 0
+    SimpleUserSchema:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Rudy Sujarwo
+        email:
+          type: string
+          example: rudy@sujarwo@gmail.com
+    CategorySchema:
+      type: object
+      properties:
+        name:
+          type: string
+          example: produk fisik
+    ResponseCategorySchema:
+      type: object
+      properties:
+        name:
+          type: string
+          example: produk fisik
+        slug:
+          type: string
+          example: produk-fisik
+    ProductSchema:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Lenovo Rx25
+        price:
+          type: integer
+          example: 25000
+        stock:
+          type: integer
+          example: 20
+        description:
+          type: string
+          example: produk fisik
+        image:
+          type: string
+          example: photo-gambar.jpg
+        category_id:
+          type: integer
+          example: 1
+    ResponseProductSchema:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Lenovo Rx25
+        price:
+          type: integer
+          example: 25000
+        stock:
+          type: integer
+          example: 20
+        image:
+          type: string
+          example: photo-gambar.jpg
+    ArrayOfCategorySchema:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResponseCategorySchema"
+    ArrayOfProductSchema:
+      type: array
+      items:
+        $ref: "#/components/schemas/ResponseProductSchema"
+    CartSchema:
+      required:
+        - product_id
+        - qty
+      type: object
+      properties:
+        product_id:
+          type: integer
+          example: 15
+        qty:
+          type: number
+          example: 2
+    ArrayOfCartSchema:
+      type: array
+      items:
+        allOf:
+          - type: object
+            properties:
+              id:
+                type: integer
+                example: 12
+              qty:
+                type: integer
+                example: 2
+              total_price:
+                type: integer
+                example: 50000
+              user_id:
+                type: integer
+                example: 98
+          - type: object
+            properties:
+              product:
+                $ref: "#/components/schemas/ProductSchema"
+    OrderSchema:
+      type: object
+      properties:
+        cart_id:
+          type: array
+          items:
+            type: integer
+            example: 23
+        address:
+          $ref: "#/components/schemas/OrderSchema_address"
+        credit_card:
+          $ref: "#/components/schemas/OrderSchema_credit_card"
+    login_body:
+      type: object
+      properties:
+        username:
+          type: string
+          example: testing
+        password:
+          type: string
+          example: testing
+    inline_response_200_login:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success login!
+        data:
+          type: object
+          example:
+            {
+              "user": { "id": 5, "name": "Testing", "username": "testing" },
+              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHBpcmVkIjoxNjUyMTQxODA5LCJ1c2VyX2lkIjo1LCJ1c2VybmFtZSI6InRlc3RpbmcifQ.Y9RuumCJP2MMcw-N0ztS5wgn5jMqygecVur1eyxc8H4",
+            }
+    inline_response_200_category:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success get all Category!
+        data:
+          $ref: "#/components/schemas/ArrayOfCategorySchema"
+    inline_response_200_product:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success get all Product!
+        data:
+          $ref: "#/components/schemas/ArrayOfProductSchema"
+    inline_response_200:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: Successful Operation
+    inline_response_201_register:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 201
+        message:
+          type: string
+          example: success register User!
+        data:
+          type: object
+          example: { name: Testing, username: testing, email: testing@gmail.com, hp: "081234567890123", created_at: 2022-05-10T06:01:18.51+07:00 }
+    inline_response_201_create:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 201
+        message:
+          type: string
+          example: success create ...!
+        data:
+          type: object
+          example: { name: ..., created_at: 2022-05-10T06:01:18.51+07:00 }
+    inline_response_200_update:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success update ...!
+        data:
+          type: object
+          example: { name: ..., updated_at: 2022-05-10T06:01:18.51+07:00 }
+    inline_response_200_delete:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success delete ...!
+        data:
+          type: object
+          example: { name: ..., deleted_at: 2022-05-10T06:01:18.51+07:00 }
+    inline_response_400_invalid:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 400
+        message:
+          type: string
+          example: "invalid request (salah type)"
+        data:
+          type: object
+          example:
+    inline_response_400:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 400
+        message:
+          type: string
+          example: "Error 1062: Duplicate entry 'field' for key 'column'"
+        data:
+          type: object
+          example:
+    inline_response_401:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 401
+        message:
+          type: string
+          example: "user or password is wrong"
+        data:
+          type: object
+          example:
+    inline_response_403:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 403
+        message:
+          type: string
+          example: "You are not allowed to access this resource"
+        data:
+          type: object
+          example:
+    inline_response_404:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 404
+        message:
+          type: string
+          example: "(...) not found"
+        data:
+          type: object
+          example:
+    cart_id_body:
+      type: object
+      properties:
+        qty:
+          type: integer
+          example: 20
+    OrderSchema_address:
+      type: object
+      properties:
+        street:
+          type: string
+          example: Jalan Veteran No.10
+        city:
+          type: string
+          example: Malang
+        state:
+          type: string
+          example: Indonesia
+        zip:
+          type: number
+          example: 10101
+      example: null
+    OrderSchema_credit_card:
+      type: object
+      properties:
+        type:
+          type: string
+          example: Visa
+        name:
+          type: string
+          example: Umam
+        number:
+          type: string
+          example: 1000-1000-1000-1000
+        cvv:
+          type: number
+          example: 10101
+        month:
+          type: number
+          example: 1
+        year:
+          type: number
+          example: 2022
+      example: null
+  responses:
+    Response200:
+      description: success create
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/inline_response_200"
+    Response400:
+      description: bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/inline_response_400"

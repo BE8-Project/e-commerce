@@ -21,7 +21,7 @@ func (om *orderModel) CheckRole(id uint) bool {
 	var user entity.User
 	om.DB.Where("id = ?", id).Find(&user)
 
-	if user.Role == 0 {
+	if user.Role == 3 {
 		return true
 	}
 
