@@ -67,7 +67,7 @@ func (u *cartModel) Delete(id uint) error {
 }
 func (u *cartModel) GetAll(id uint) ([]entity.Cart, error) {
 	var cart []entity.Cart
-	if err := u.DB.Where("userID=?", id).Find(&cart).Error; err != nil {
+	if err := u.DB.Where("user_id=?", id).Find(&cart).Error; err != nil {
 		log.Warn(err)
 		return []entity.Cart{}, err
 	}
