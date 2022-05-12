@@ -1,7 +1,10 @@
 package response
 
 import (
+	"fmt"
 	"net/http"
+
+	"github.com/go-playground/validator/v10"
 )
 
 type LoginDetail struct {
@@ -18,9 +21,19 @@ func StatusInvalidRequest() map[string]interface{} {
 }
 
 func StatusBadRequest(err error) map[string]interface{} {
+	var field, tag string
+	var message [] string
+	
+	for _, err := range err.(validator.ValidationErrors) {
+		field = fmt.Sprint(err.StructField())
+		tag = fmt.Sprint(err.Tag())
+
+		message = append(message, "field "+field+" : "+tag)
+	}
+	
 	return map[string]interface{}{
 		"code":    http.StatusBadRequest,
-		"message": err.Error(),
+		"message": message,
 		"data":    nil,
 	}
 }

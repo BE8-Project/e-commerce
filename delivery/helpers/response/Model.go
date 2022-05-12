@@ -81,14 +81,18 @@ type CartInsert struct {
 }
 
 type InsertAddress struct {
-	UserID   uint    `json:"userID"`
+	UserID   uint    `json:"user_id"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
 type InsertOrder struct {
-	TrackingNumber string `json:"tracking_number"`
-	PaymentType string `json:"payment_type"`
+	OrderID string `json:"order_id"`
 	Total float64 `json:"total"`
-	Status string `json:"status"`
 	CreatedAt time.Time `json:"created_at"`
+}
+
+type UpdateOrder struct {
+	OrderID string `json:"order_id"`
+	Status string `json:"status"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

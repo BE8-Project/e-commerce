@@ -8,16 +8,19 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
 type cartController struct {
 	Connect repoCart.CartModel
+	Validate *validator.Validate
 }
 
 func NewCartController(conn repoCart.CartModel) *cartController {
 	return &cartController{
 		Connect: conn,
+		Validate: validator.New(),
 	}
 }
 
@@ -29,6 +32,10 @@ func (u *cartController) Insert() echo.HandlerFunc {
 
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
+		}
+
+		if err := u.Validate.Struct(request); err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
 		}
 
 		err := u.Connect.Insert(request, uint(userID))
@@ -70,10 +77,16 @@ func (u *cartController) Update() echo.HandlerFunc {
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
 		}
+
+		if err := u.Validate.Struct(request); err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+		}
+
 		error := u.Connect.Update(request, CartID)
 		if error != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(error))
 		}
+		
 		cartAll, error := u.Connect.GetAll(uint(userID))
 		if error != nil {
 			return c.JSON(http.StatusForbidden, response.StatusForbidden("You are not allowed to access this resource"))

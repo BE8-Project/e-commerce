@@ -8,16 +8,19 @@ import (
 	repoProduct "e-commerce/repository/product"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
 type productController struct {
 	Connect repoProduct.ProductModel
+	Validate *validator.Validate
 }
 
 func NewProductController(conn repoProduct.ProductModel) *productController {
 	return &productController{
 		Connect: conn,
+		Validate: validator.New(),
 	}
 }
 
@@ -32,6 +35,10 @@ func (u *productController) Insert() echo.HandlerFunc  {
 
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
+		}
+
+		if err := u.Validate.Struct(request); err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
 		}
 
 		product := entity.Product{
@@ -79,7 +86,7 @@ func (u *productController) Update() echo.HandlerFunc {
 	return func (c echo.Context) error {
 		userID := middlewares.ExtractTokenUserId(c)
 		slug := c.Param("slug")
-		var request request.InsertProduct
+		var request request.UpdateProduct
 	
 		if !u.Connect.CheckRole(uint(userID)) {
 			return c.JSON(http.StatusForbidden, response.StatusForbidden("You are not allowed to access this resource"))
@@ -91,6 +98,10 @@ func (u *productController) Update() echo.HandlerFunc {
 	
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
+		}
+
+		if err := u.Validate.Struct(request); err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
 		}
 	
 		product := entity.Product{

@@ -8,16 +8,19 @@ import (
 	repoCategory "e-commerce/repository/category"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
 type categoryController struct {
 	Connect repoCategory.CategoryModel
+	Validate *validator.Validate
 }
 
 func NewCategoryController(conn repoCategory.CategoryModel) *categoryController {
 	return &categoryController{
 		Connect: conn,
+		Validate: validator.New(),
 	}
 }
 
@@ -33,6 +36,10 @@ func (cc *categoryController) Insert() echo.HandlerFunc {
 	
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
+		}
+
+		if err := cc.Validate.Struct(request); err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
 		}
 	
 		category := entity.Category{

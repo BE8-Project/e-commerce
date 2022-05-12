@@ -1,8 +1,10 @@
 package routes
 
 import (
+	address "e-commerce/delivery/controllers/address"
 	"e-commerce/delivery/controllers/cart"
 	category "e-commerce/delivery/controllers/category"
+	"e-commerce/delivery/controllers/order"
 	product "e-commerce/delivery/controllers/product"
 	user "e-commerce/delivery/controllers/user"
 	"net/http"
@@ -11,7 +13,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func Route(e *echo.Echo, connUser user.UserController, connCategory category.CategoryController, connProduct product.ProductController, connCart cart.CartController) {
+func Route(e *echo.Echo, connUser user.UserController, connCategory category.CategoryController, connProduct product.ProductController, connCart cart.CartController, connAddress address.AddressController, connOrder order.OrderController) {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "time:${time_rfc3339}, method=${method}, uri=${uri}, status=${status}\n",
@@ -38,6 +40,8 @@ func Route(e *echo.Echo, connUser user.UserController, connCategory category.Cat
 	customer.PUT("/carts/:id", connCart.Update())
 	customer.DELETE("/carts/:id", connCart.Delete())
 
+	customer.POST("/address", connAddress.Insert())
+
 	admin := e.Group("/admin", middleware.JWTWithConfig(middleware.JWTConfig{SigningKey: []byte("$p4ssw0rd")}))
 	admin.POST("/categories", connCategory.Insert())
 
@@ -48,4 +52,8 @@ func Route(e *echo.Echo, connUser user.UserController, connCategory category.Cat
 	merchant.GET("/products", connProduct.GetAllMerchant())
 	customer.POST("/carts", connCart.Insert())
 
+	order := e.Group("/orders", middleware.JWTWithConfig(middleware.JWTConfig{SigningKey: []byte("$p4ssw0rd")}))
+	order.POST("", connOrder.Insert())
+	order.GET("/:order_id", connOrder.GetStatus())
+	order.GET("/:order_id/cancel", connOrder.Cancel())
 }

@@ -29,7 +29,7 @@ func InitDB(config AppConfig) *gorm.DB {
 }
 
 func AutoMigrate(db *gorm.DB) {
-	db.AutoMigrate(&entity.User{}, &entity.Category{}, &entity.Product{})
+	db.AutoMigrate(&entity.User{}, &entity.Category{}, &entity.Product{}, &entity.Cart{}, &entity.Address{}, &entity.Order{})
 
 	// db.Create(&entity.User{
 	// 	Name: "Admin Website",

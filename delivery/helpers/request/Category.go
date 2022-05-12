@@ -1,5 +1,5 @@
 package request
 
 type InsertCategory struct {
-	Name string `json:"name"`
+	Name string `json:"name" validate:"required"`
 }

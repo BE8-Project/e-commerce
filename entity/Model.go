@@ -8,7 +8,7 @@ type User struct {
 	Username string    `gorm:"type:varchar(35);not null;unique"`
 	Email    string    `gorm:"type:varchar(100);not null;unique"`
 	HP       string    `gorm:"type:varchar(20);not null;unique"`
-	Password string    `gorm:"type:varchar(100);not null"`
+	Password string    `gorm:"type:varchar(255);not null"`
 	Role     int       `gorm:"type:int;not null"`
 	Products []Product `gorm:"foreignkey:UserID"`
 	Addresses []Address `gorm:"foreignkey:UserID"`
@@ -51,7 +51,7 @@ type Address struct {
 	Address string `gorm:"type:varchar(100);not null"`
 	City string `gorm:"type:varchar(100);not null"`
 	Country string `gorm:"type:varchar(100);not null"`
-	ZipCode string `gorm:"type:varchar(100);not null"`
+	ZipCode int `gorm:"type:varchar(100);not null"`
 	Orders []Order `gorm:"foreignkey:AddressID"`
 }
 

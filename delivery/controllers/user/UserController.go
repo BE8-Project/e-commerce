@@ -8,16 +8,19 @@ import (
 	repoUser "e-commerce/repository/user"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
 type userController struct {
 	Connect repoUser.UserModel
+	Validate *validator.Validate
 }
 
 func NewUserController(conn repoUser.UserModel) *userController {
 	return &userController{
 		Connect: conn,
+		Validate: validator.New(),
 	}
 }
 
@@ -27,6 +30,10 @@ func (u *userController) Register() echo.HandlerFunc {
 
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
+		}
+
+		if err := u.Validate.Struct(request); err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
 		}
 
 		user := entity.User{
@@ -53,6 +60,10 @@ func (u *userController) Login() echo.HandlerFunc {
 
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
+		}
+
+		if err := u.Validate.Struct(request); err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
 		}
 
 		var input []string
@@ -89,7 +100,7 @@ func (u *userController) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		username := c.Param("username")
 
-		var request request.InsertUser
+		var request request.UpdateUser
 		if err := c.Bind(&request); err != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
 		}

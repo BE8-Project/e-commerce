@@ -6,19 +6,21 @@ import (
 	middlewares "e-commerce/delivery/middleware"
 	"e-commerce/entity"
 	repoAddress "e-commerce/repository/address"
-	"fmt"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
 
 type addressController struct {
 	Connect repoAddress.AddressModel
+	Validate *validator.Validate
 }
 
-func NewProductController(conn repoAddress.AddressModel) *addressController {
+func NewAddressController(conn repoAddress.AddressModel) *addressController {
 	return &addressController{
 		Connect: conn,
+		Validate: validator.New(),
 	}
 }
 
@@ -31,14 +33,23 @@ func (ac *addressController) Insert() echo.HandlerFunc {
 			return c.JSON(http.StatusBadRequest, response.StatusInvalidRequest())
 		}
 
+		if err := ac.Validate.Struct(request); err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+		}
+
 		address := entity.Address{
 			UserID: uint(userID),
 			Address: request.Address,
 			City: request.City,
+			Country: request.Country,
+			ZipCode: request.ZipCode,
 		}
 
-		fmt.Println(address)
+		result, err := ac.Connect.Insert(&address)
+		if err != nil {
+			return c.JSON(http.StatusBadRequest, response.StatusBadRequest(err))
+		}
 
-		return c.JSON(http.StatusCreated, response.StatusCreated("success create address!", address))
+		return c.JSON(http.StatusCreated, response.StatusCreated("success create Address!", result))
 	}
 }
