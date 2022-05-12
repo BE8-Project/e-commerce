@@ -53,3 +53,17 @@ func (ac *addressController) Insert() echo.HandlerFunc {
 		return c.JSON(http.StatusCreated, response.StatusCreated("success create Address!", result))
 	}
 }
+
+func (ac *addressController) GetByUserID() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		userID := middlewares.ExtractTokenUserId(c)
+
+		addresses := ac.Connect.GetByUserID(uint(userID))
+		
+		if len(addresses) == 0 {
+			return c.JSON(http.StatusNotFound, response.StatusNotFound("Address not found!"))
+		}
+		
+		return c.JSON(http.StatusOK, response.StatusOK("success get Address!", addresses))
+	}
+}

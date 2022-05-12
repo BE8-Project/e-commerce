@@ -138,8 +138,16 @@ func (ma *mockAddress) Insert(address *entity.Address) (response.InsertAddress, 
 	}, nil
 }
 
+func (ma *mockAddress) GetByUserID(userID uint) []response.Address {
+	return []response.Address{}
+}
+
 type mockError struct {}
 
 func (ma *mockError) Insert(address *entity.Address) (response.InsertAddress, error) {
 	return response.InsertAddress{}, assert.AnError
+}
+
+func (ma *mockError) GetByUserID(userID uint) []response.Address {
+	return nil
 }

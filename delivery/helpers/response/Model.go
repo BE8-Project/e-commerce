@@ -104,3 +104,11 @@ type UpdateOrder struct {
 	Status string `json:"status"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+type Address struct {
+	ID uint `json:"id"`
+	Address string `json:"address"`
+	City string `json:"city"`
+	Country string `json:"country"`
+	ZipCode string `json:"zip_code"`
+}

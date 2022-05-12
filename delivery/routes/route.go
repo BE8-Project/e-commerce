@@ -41,6 +41,7 @@ func Route(e *echo.Echo, connUser user.UserController, connCategory category.Cat
 	customer.DELETE("/carts/:id", connCart.Delete())
 
 	customer.POST("/address", connAddress.Insert())
+	customer.GET("/address", connAddress.GetByUserID())
 
 	admin := e.Group("/admin", middleware.JWTWithConfig(middleware.JWTConfig{SigningKey: []byte("$p4ssw0rd")}))
 	admin.POST("/categories", connCategory.Insert())

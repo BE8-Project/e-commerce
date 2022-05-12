@@ -29,3 +29,15 @@ func (am *addressModel) Insert(address *entity.Address) (response.InsertAddress,
 		}, nil
 	}
 }
+
+func (am *addressModel) GetByUserID(userID uint) []response.Address {
+	var addresses []response.Address
+
+	record := am.DB.Where("user_id = ?", userID).Find(&addresses)
+
+	if record.RowsAffected == 0 {
+		return []response.Address{}
+	} else {
+		return addresses
+	}
+}

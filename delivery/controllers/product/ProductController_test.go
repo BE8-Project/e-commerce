@@ -168,7 +168,7 @@ func TestInsert(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &resp)
 
 		assert.Equal(t, 400, resp.Code)
-		assert.Equal(t, "kesalahan input", resp.Message)
+		assert.Equal(t, "assert.AnError general error for testing", resp.Message)
 	})
 }
 
@@ -435,7 +435,7 @@ func TestUpdate(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &resp)
 
 		assert.Equal(t, 400, resp.Code)
-		assert.Equal(t, "kesalahan input", resp.Message)
+		assert.Equal(t, "assert.AnError general error for testing", resp.Message)
 	})
 
 	t.Run("Status NotFound", func(t *testing.T) {
@@ -607,7 +607,7 @@ func TestDelete(t *testing.T) {
 		json.Unmarshal([]byte(res.Body.Bytes()), &resp)
 
 		assert.Equal(t, 400, resp.Code)
-		assert.Equal(t, "kesalahan input", resp.Message)
+		assert.Equal(t, "assert.AnError general error for testing", resp.Message)
 	})
 }
 
