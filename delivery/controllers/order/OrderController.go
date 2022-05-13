@@ -83,10 +83,22 @@ func (u *orderController) Insert() echo.HandlerFunc {
 
 		resp, _ := coreapi.ChargeTransactionWithMap(Gopay(result.OrderID, result.Total))
 
-		var message interface{}
+		var message []interface{}
+		var transaction_id string
 		for key, value := range resp {
 			if key == "actions" {
-				message = value
+				message = value.([]interface{})
+			}
+
+			if key == "transaction_id" {
+				transaction_id = value.(string)
+			}
+		}
+
+		var action map[string]interface{}
+		for key, value := range message {
+			if key == 1 {
+				action = value.(map[string]interface{})
 			}
 		}
 
@@ -95,7 +107,8 @@ func (u *orderController) Insert() echo.HandlerFunc {
 		data["payment_type"] = "gopay"
 		data["total"] = result.Total
 		data["status"] = "pending"
-		data["payment_url"] = message
+		data["payment_simulator"] = action["url"]
+		data["payment_url"] = "https://api.sandbox.midtrans.com/v2/gopay/"+transaction_id+"/qr-code"
 		data["created_at"] = result.CreatedAt
 
 		return c.JSON(http.StatusCreated, response.StatusCreated("success create Order!", data))
