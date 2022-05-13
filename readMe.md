@@ -6,7 +6,7 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
 
 - > `[POST] /register` endpoint ini digunakan untuk mendaftar akun.
 
-  untuk pengisian field `role` (0 = customers (pembeli), 1 = merchants (penjual))
+  untuk pengisian field `role` (3 = customers (pembeli), 1 = merchants (penjual))
 
   ```
   {
@@ -40,6 +40,16 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
 
 - > `[DELETE] /users/{username}` endpoint ini digunakan untuk menghapus user
 - > `[GET] /users/{username}` endpoint ini digunakan untuk mengambil data profil user
+- > `[POST] /users/address` endpoint ini digunakan untuk membuat alamat baru
+  ```
+  {
+   "address" : "Jl. Kebayoran",
+   "city" : "Jakarta",
+   "country" : "Indonesia",
+   "zip_code" : 12240
+  }
+  ```
+- > `[GET] /users/address` endpoint ini digunakan untuk mengambil daftar alamat
 - > `[POST] /admin/categories` endpoint ini digunakan oleh admin untuk membuat kategori baru
 
   ```
@@ -72,11 +82,7 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
   ```
 
 - > `[DELETE] /merchants/products/{slug}` endpoint ini digunakan oleh merchant untuk menghapus data produk
-- > `[GET] /merchants/products`
-
-  ```
-  use autorization (bearer)
-  ```
+- > `[GET] /merchants/products` endpoint ini digunakan oleh merchant untuk melihat daftar produk yang telah dibuat
 
 - > `[GET] /products`
 - > `[GET] /products/{slug}`
@@ -86,6 +92,18 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
   ```
   parameter=name    || value=laptop
   ```
+
+- > `[POST] /orders` endpoint ini digunakan oleh customer untuk membuat orders
+  ```
+  {
+     "address_id" : 1,
+     "payment_type" : "gopay",
+     "total" : 100000
+  }
+  ```
+
+-> `[GET] /orders/{order_id}` endpoint ini digunakan oleh customer untuk mengecek status pembayaran
+-> `[GET] /orders/{order_id}/cancel` endpoint ini digunakan oleh customer untuk membatalkan pesanan yang diorder
 
 ## Contributing
 
