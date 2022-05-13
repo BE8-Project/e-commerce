@@ -12,8 +12,6 @@ info:
 servers:
   - url: http://54.179.1.246:8000
     description: Development
-  - url: https://{dev}.ecommerce.com/v1
-    description: Development
     variables:
       environment:
         default: dev
@@ -77,14 +75,14 @@ paths:
       tags:
         - Users
       parameters:
-        - name: id
+        - name: username
           in: path
           required: true
           style: simple
           explode: false
           schema:
-            type: number
-            example: 1
+            type: string
+            example: testing
       responses:
         "200":
           description: get user by id
@@ -102,19 +100,19 @@ paths:
       tags:
         - Users
       parameters:
-        - name: id
+        - name: username
           in: path
           required: true
           style: simple
           explode: false
           schema:
-            type: number
-            example: 1
+            type: string
+            example: testing
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UsersSchema"
+              $ref: "#/components/schemas/UsersPutSchema"
       responses:
         "200":
           description: success create
@@ -132,14 +130,14 @@ paths:
       tags:
         - Users
       parameters:
-        - name: id
+        - name: username
           in: path
           required: true
           style: simple
           explode: false
           schema:
-            type: number
-            example: 1
+            type: string
+            example: testing
       responses:
         "200":
           description: success create
@@ -266,7 +264,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_404"
-  /products/category/{category}:
+  /products/category/{category_id}:
     get:
       tags:
         - Products
@@ -294,17 +292,19 @@ paths:
                 $ref: "#/components/schemas/inline_response_400"
   /merchants/products/{slug}:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Products
       parameters:
-        - name: id
+        - name: slug
           in: path
           required: true
           style: simple
           explode: false
           schema:
-            type: number
-            example: 1
+            type: string
+            example: nama-produk
       responses:
         "200":
           description: get all books
@@ -403,6 +403,8 @@ paths:
                 $ref: "#/components/schemas/inline_response_404"
   /users/cart:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Cart
       responses:
@@ -411,7 +413,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ArrayOfCartSchema"
+                $ref: "#/components/schemas/inline_response_200_getcart"
         "400":
           description: bad request
           content:
@@ -419,6 +421,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/inline_response_400"
     post:
+      security:
+        - bearerAuth: []
       tags:
         - Cart
       requestBody:
@@ -440,32 +444,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/inline_response_400"
   /users/cart/{id}:
-    get:
-      tags:
-        - Cart
-      parameters:
-        - name: id
-          in: path
-          required: true
-          style: simple
-          explode: false
-          schema:
-            type: number
-            example: 1
-      responses:
-        "200":
-          description: get all books
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProductSchema"
-        "400":
-          description: bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_400"
     put:
+      security:
+        - bearerAuth: []
       tags:
         - Cart
       parameters:
@@ -483,12 +464,12 @@ paths:
             schema:
               $ref: "#/components/schemas/cart_id_body"
       responses:
-        "200":
-          description: success create
+        "201":
+          description: success update to Cart!
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200"
+                $ref: "#/components/schemas/inline_response_201_cart"
         "400":
           description: bad request
           content:
@@ -496,6 +477,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/inline_response_400"
     delete:
+      security:
+        - bearerAuth: []
       tags:
         - Cart
       parameters:
@@ -513,31 +496,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/inline_response_200"
+                $ref: "#/components/schemas/inline_response_201_deletecart"
         "400":
           description: bad request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_400"
-  /user/order/{id}:
-    get:
-      tags:
-        - Order
-      responses:
-        "200":
-          description: get all cart user
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ArrayOfCartSchema"
-        "400":
-          description: bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/inline_response_400"
+
+  /orders:
     post:
+      security:
+        - bearerAuth: []
       tags:
         - Order
       requestBody:
@@ -552,6 +522,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/inline_response_200"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+  /orders/{order_id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Order
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: "DM-xxxxxx"
+      responses:
+        "200":
+          description: get all cart user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayOfCartSchema"
+        "400":
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inline_response_400"
+  /orders/{order_id}/cancel:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Order
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+            example: "DM-xxxxxx"
+      responses:
+        "200":
+          description: get all cart user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayOfCartSchema"
         "400":
           description: bad request
           content:
@@ -585,7 +611,22 @@ components:
           example: testing
         role:
           type: integer
-          example: 0
+          example: 3
+    UsersPutSchema:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Testing
+        hp:
+          type: string
+          example: 081234567890
+        email:
+          type: string
+          example: testing@gmail.com
+        password:
+          type: string
+          example: testing
     SimpleUserSchema:
       type: object
       properties:
@@ -694,18 +735,67 @@ components:
             properties:
               product:
                 $ref: "#/components/schemas/ProductSchema"
+    ArrayCartUpdateSchema:
+      type: array
+      items:
+        allOf:
+          - type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: lenovo
+              qty:
+                type: integer
+                example: 20
+              price:
+                type: integer
+                example: 50000
+              user_id:
+                type: integer
+                example: 98
+              product_id:
+                type: integer
+                example: 98
+    ArrayCartGetSchema:
+      type: array
+      items:
+        allOf:
+          - type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: lenovo
+              qty:
+                type: integer
+                example: 2
+              price:
+                type: integer
+                example: 50000
+              user_id:
+                type: integer
+                example: 98
+              product_id:
+                type: integer
+                example: 98
+
     OrderSchema:
       type: object
       properties:
-        cart_id:
-          type: array
-          items:
-            type: integer
-            example: 23
-        address:
-          $ref: "#/components/schemas/OrderSchema_address"
-        credit_card:
-          $ref: "#/components/schemas/OrderSchema_credit_card"
+        address_id:
+          type: integer
+          example: 1
+        payment_type:
+          type: string
+          example: "gopay"
+        total:
+          type: integer
+          example: 100000
     login_body:
       type: object
       properties:
@@ -753,6 +843,39 @@ components:
           example: success get all Product!
         data:
           $ref: "#/components/schemas/ArrayOfProductSchema"
+    inline_response_201_cart:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 201
+        message:
+          type: string
+          example: success update to Cart!
+        data:
+          $ref: "#/components/schemas/ArrayCartUpdateSchema"
+    inline_response_201_deletecart:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 201
+        message:
+          type: string
+          example: success delete to Cart!
+        data:
+          example:
+    inline_response_200_getcart:
+      type: object
+      properties:
+        code:
+          type: number
+          example: 200
+        message:
+          type: string
+          example: success get cart!
+        data:
+          $ref: "#/components/schemas/ArrayCartGetSchema"
     inline_response_200:
       type: object
       properties:
