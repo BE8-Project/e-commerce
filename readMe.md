@@ -93,6 +93,25 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
   parameter=name    || value=laptop
   ```
 
+- > `[GET] /users/carts` endpoint ini digunakan untuk mengambil data Cart
+- > `[PUT] /users/carts/{id}` endpoint ini digunakan untuk mengedit data Cart
+
+```
+  {
+     "quantity" : 5
+  }
+```
+
+- > `[DELETE] /users/carts/{id}` endpoint ini digunakan untuk menghapus data Cart
+- > `[POST] /users/carts` endpoint ini digunakan untuk menambah data Cart
+
+```
+ {
+    "product_id" : 2,
+    "quantity" : 5
+ }
+```
+
 - > `[POST] /orders` endpoint ini digunakan oleh customer untuk membuat orders
   ```
   {
