@@ -2,6 +2,23 @@
 
 Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://alterra.id
 
+## Overview
+e-Commerce API ini memiliki fitur sebagai berikut :
+1. `User` bisa membuat akun sebagai `Customer` atau `Merchant`
+2. `User` bisa login
+3. `Admin` yang akan membuat kategori untuk produk yang akan dijual oleh `Merchant`
+4. `Merchant` bisa membuat, mengedit, dan menghapus Product
+5. `Customer` bisa memilih product yang dibuat oleh `Merchant` yang akan dimasukkan kedalam keranjang
+6. di dalam keranjang `Customer` bisa melakukan checkout atau mengedit jumlah yang akan di order
+7. ketika di order `Customer` bisa mengecek status pesanan dan juga bisa membatalkan pesanan
+
+## ERD
+https://drive.google.com/file/d/10Gbv-P1tqDp0lQkfIZrxk5NvowllZY4c/view
+
+## OpenAPI
+- https://app.swaggerhub.com/apis/e-commerce99/e-commerce/1.0.0
+- https://54.179.1.246:8000
+
 ## Endpoint
 
 - > `[POST] /register` endpoint ini digunakan untuk mendaftar akun.
@@ -15,7 +32,7 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
       "hp" : "081234567890",
       "email" : "testing@gmail.com",
       "password" : "password",
-      "role" : 0
+      "role" : 3
   }
   ```
 
@@ -121,8 +138,8 @@ Salah satu tugas kelompok untuk menyelesaikan course di Alterra Academy https://
   }
   ```
 
--> `[GET] /orders/{order_id}` endpoint ini digunakan oleh customer untuk mengecek status pembayaran
--> `[GET] /orders/{order_id}/cancel` endpoint ini digunakan oleh customer untuk membatalkan pesanan yang diorder
+- > `[GET] /orders/{order_id}` endpoint ini digunakan oleh customer untuk mengecek status pembayaran
+- > `[GET] /orders/{order_id}/cancel` endpoint ini digunakan oleh customer untuk membatalkan pesanan yang diorder
 
 ## Contributing
 
