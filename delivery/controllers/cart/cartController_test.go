@@ -249,37 +249,37 @@ func TestUpdate(t *testing.T) {
 		assert.Equal(t, "success update to Cart!", resp.Message)
 	})
 
-	// t.Run("Status Forbidden", func(t *testing.T) {
-	// 	e := echo.New()
-	// 	requestBody, _ := json.Marshal(map[string]interface{}{
-	// 		"quantity": 3,
-	// 	})
+	t.Run("Status Forbidden", func(t *testing.T) {
+		e := echo.New()
+		requestBody, _ := json.Marshal(map[string]interface{}{
+			"quantity": 3,
+		})
 
-	// 	req := httptest.NewRequest(http.MethodPut, "/", strings.NewReader(string(requestBody)))
-	// 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	// 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token_user)
+		req := httptest.NewRequest(http.MethodPut, "/", strings.NewReader(string(requestBody)))
+		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		req.Header.Set(echo.HeaderAuthorization, "Bearer "+token_user)
 
-	// 	res := httptest.NewRecorder()
-	// 	context := e.NewContext(req, res)
-	// 	context.SetPath("/users/carts/:id")
-	// 	context.SetParamNames("id")
-	// 	context.SetParamValues("1")
-	// 	controller := NewCartController(&mockErorCart{})
+		res := httptest.NewRecorder()
+		context := e.NewContext(req, res)
+		context.SetPath("/users/carts/:id")
+		context.SetParamNames("id")
+		context.SetParamValues("1")
+		controller := NewCartController(&mockBiddenErorCart{})
 
-	// 	middleware.JWTWithConfig(middleware.JWTConfig{SigningMethod: "HS256", SigningKey: []byte("$p4ssw0rd")})(controller.Update())(context)
+		middleware.JWTWithConfig(middleware.JWTConfig{SigningMethod: "HS256", SigningKey: []byte("$p4ssw0rd")})(controller.Update())(context)
 
-	// 	type Response struct {
-	// 		Code    int    `json:"code"`
-	// 		Message string `json:"message"`
-	// 		Data    interface{}
-	// 	}
+		type Response struct {
+			Code    int    `json:"code"`
+			Message string `json:"message"`
+			Data    interface{}
+		}
 
-	// 	var resp Response
-	// 	json.Unmarshal([]byte(res.Body.Bytes()), &resp)
+		var resp Response
+		json.Unmarshal([]byte(res.Body.Bytes()), &resp)
 
-	// 	assert.Equal(t, 403, resp.Code)
-	// 	assert.Equal(t, "You are not allowed to access this resource", resp.Message)
-	// })
+		assert.Equal(t, 403, resp.Code)
+		assert.Equal(t, "You are not allowed to access this resource", resp.Message)
+	})
 
 	t.Run("Status Invalid", func(t *testing.T) {
 		e := echo.New()
@@ -376,8 +376,8 @@ func TestDelete(t *testing.T) {
 
 type mockCart struct{}
 
-func (mc *mockCart) Checkid(id uint, idcart uint) bool {
-	return true
+func (mc *mockCart) Checkid(id uint, idcart uint) error {
+	return nil
 }
 func (mc *mockCart) Insert(cart request.InsertCart, idUser uint) error {
 	return nil
@@ -403,8 +403,8 @@ func (mc *mockCart) Delete(id uint) error {
 
 type mockErorCart struct{}
 
-func (mc *mockErorCart) Checkid(id uint, idcart uint) bool {
-	return true
+func (mc *mockErorCart) Checkid(id uint, idcart uint) error {
+	return errors.New("eror")
 }
 func (mc *mockErorCart) Insert(cart request.InsertCart, idUser uint) error {
 	return errors.New("Eror Insert")
@@ -421,8 +421,8 @@ func (mc *mockErorCart) Delete(id uint) error {
 
 type mockBiddenErorCart struct{}
 
-func (mc *mockBiddenErorCart) Checkid(id uint, idcart uint) bool {
-	return true
+func (mc *mockBiddenErorCart) Checkid(id uint, idcart uint) error {
+	return errors.New("eror")
 }
 func (mc *mockBiddenErorCart) Insert(cart request.InsertCart, idUser uint) error {
 	return errors.New("Eror Insert")
@@ -439,8 +439,8 @@ func (mc *mockBiddenErorCart) Delete(id uint) error {
 
 type mockErorInputCart struct{}
 
-func (mc *mockErorInputCart) Checkid(id uint, idcart uint) bool {
-	return true
+func (mc *mockErorInputCart) Checkid(id uint, idcart uint) error {
+	return nil
 }
 func (mc *mockErorInputCart) Insert(cart request.InsertCart, idUser uint) error {
 	return errors.New("Eror Insert")

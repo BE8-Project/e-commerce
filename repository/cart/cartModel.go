@@ -4,6 +4,7 @@ import (
 	"e-commerce/delivery/helpers/request"
 	"e-commerce/entity"
 	"errors"
+	"fmt"
 
 	"github.com/labstack/gommon/log"
 	"gorm.io/gorm"
@@ -19,15 +20,17 @@ func NewCartModel(db *gorm.DB) *cartModel {
 	}
 }
 
-func (u *cartModel) Checkid(id uint, idcart uint) bool {
+func (u *cartModel) Checkid(id uint, idcart uint) error {
 	var cart entity.Cart
 	u.DB.Where("id = ?", idcart).Find(&cart)
 
-	if cart.UserID == id {
-		return true
+	if cart.UserID != id {
+		return errors.New("error")
 	}
+	fmt.Println(cart.UserID)
+	fmt.Println(id)
 
-	return false
+	return nil
 }
 
 func (u *cartModel) Insert(cart request.InsertCart, idUser uint) error {

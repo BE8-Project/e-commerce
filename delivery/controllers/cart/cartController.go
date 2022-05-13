@@ -70,7 +70,7 @@ func (u *cartController) Update() echo.HandlerFunc {
 		cartId, _ := strconv.Atoi(c.Param("id"))
 		CartID := uint(cartId)
 
-		if res := u.Connect.Checkid(CartID, uint(userID)); res != false {
+		if res := u.Connect.Checkid(uint(userID), CartID); res != nil {
 			return c.JSON(http.StatusForbidden, response.StatusForbidden("You are not allowed to access this resource"))
 		}
 
@@ -108,7 +108,7 @@ func (u *cartController) Delete() echo.HandlerFunc {
 		cartId, _ := strconv.Atoi(c.Param("id"))
 		CartID := uint(cartId)
 
-		if res := u.Connect.Checkid(CartID, uint(userID)); res != false {
+		if res := u.Connect.Checkid(uint(userID), CartID); res != nil {
 			return c.JSON(http.StatusForbidden, response.StatusForbidden("You are not allowed to access this resource"))
 		}
 

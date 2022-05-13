@@ -6,7 +6,7 @@ import (
 )
 
 type CartModel interface {
-	Checkid(id uint, idcart uint) bool
+	Checkid(id uint, idcart uint) error
 	Insert(cart request.InsertCart, idUser uint) error
 	GetAll(id uint) ([]entity.Cart, error)
 	Update(cart request.UpdateCart, id uint) error

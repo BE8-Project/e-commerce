@@ -26,7 +26,7 @@ func TestRegister(t *testing.T) {
 			"email":    "fajar123@gmail.com",
 			"hp":       "098765433212",
 			"password": "qwerty",
-			"role":     0,
+			"role":     1,
 		})
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(string(requestBody)))
 		req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -90,7 +90,7 @@ func TestRegister(t *testing.T) {
 			"email":    "fajar123@gmail.com",
 			"hp":       "098765433212",
 			"password": "qwerty",
-			"role":     0,
+			"role":     1,
 		})
 
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(string(requestBody)))
@@ -122,7 +122,7 @@ func TestRegister(t *testing.T) {
 			"email":    "fajar123@gmail.com",
 			"hp":       "098765433212",
 			"password": "qwerty",
-			"role":     0,
+			"role":     1,
 		})
 
 		req := httptest.NewRequest(http.MethodPost, "/", strings.NewReader(string(requestBody)))
