@@ -36,7 +36,7 @@ func Route(e *echo.Echo, connUser user.UserController, connCategory category.Cat
 	customer.GET("/:username", connUser.GetUser)
 	customer.PUT("/:username", connUser.Update())
 	customer.DELETE("/:username", connUser.Delete())
-	customer.GET("/carts", connCart.GetAll)
+	customer.GET("/carts", connCart.GetAll())
 	customer.PUT("/carts/:id", connCart.Update())
 	customer.DELETE("/carts/:id", connCart.Delete())
 

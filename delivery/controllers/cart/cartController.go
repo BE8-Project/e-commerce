@@ -13,13 +13,13 @@ import (
 )
 
 type cartController struct {
-	Connect repoCart.CartModel
+	Connect  repoCart.CartModel
 	Validate *validator.Validate
 }
 
 func NewCartController(conn repoCart.CartModel) *cartController {
 	return &cartController{
-		Connect: conn,
+		Connect:  conn,
 		Validate: validator.New(),
 	}
 }
@@ -47,19 +47,21 @@ func (u *cartController) Insert() echo.HandlerFunc {
 	}
 }
 
-func (u *cartController) GetAll(c echo.Context) error {
-	userID := token.ExtractTokenUserId(c)
+func (u *cartController) GetAll() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		userID := token.ExtractTokenUserId(c)
 
-	cartAll, error := u.Connect.GetAll(uint(userID))
-	if error != nil {
-		return c.JSON(http.StatusForbidden, response.StatusForbidden("You are not allowed to access this resource"))
+		cartAll, error := u.Connect.GetAll(uint(userID))
+		if error != nil {
+			return c.JSON(http.StatusForbidden, response.StatusForbidden("You are not allowed to access this resource"))
+		}
+
+		if len(cartAll) == 0 {
+			return c.JSON(http.StatusNotFound, response.StatusNotFound("Cart not found"))
+		}
+
+		return c.JSON(http.StatusOK, response.StatusOK("success get cart!", cartAll))
 	}
-
-	if len(cartAll) == 0 {
-		return c.JSON(http.StatusNotFound, response.StatusNotFound("Cart not found"))
-	}
-
-	return c.JSON(http.StatusOK, response.StatusOK("success get cart!", cartAll))
 }
 
 func (u *cartController) Update() echo.HandlerFunc {
@@ -86,7 +88,7 @@ func (u *cartController) Update() echo.HandlerFunc {
 		if error != nil {
 			return c.JSON(http.StatusBadRequest, response.StatusBadRequestDuplicate(error))
 		}
-		
+
 		cartAll, error := u.Connect.GetAll(uint(userID))
 		if error != nil {
 			return c.JSON(http.StatusForbidden, response.StatusForbidden("You are not allowed to access this resource"))
